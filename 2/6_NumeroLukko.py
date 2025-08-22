@@ -2,14 +2,15 @@ import random
 
 while True:
     password = []
-    option = input(f'Onko lukkosi kolmenumeroinen (1) vai nelinumeroinen (2)?: ')
+    option = str.lower(input(f'Onko lukkosi kolmenumeroinen (3) vai nelinumeroinen (4)?: '))
 
-    if (str.lower(option) == '1') | (str.lower(option) == 'kolmenumeroinen'):
+    # Python 3.9 ei tue match statementteja, joten käytän vain if else lausekkeita tässä
+    if option == '3' or option == 'kolmenumeroinen' or option == 'kolme':
         for i in range(3):
             password.append(random.randint(0, 9))
         print(f'Salasanasi: {password}')
 
-    elif (str.lower(option) == '2') | (str.lower(option) == 'nelinumeroinen'):
+    elif option == '4' or option == 'nelinumeroinen' or option == 'neljä':
         for i in range(4):
             password.append(random.randint(0, 6))
         print(f'Salasanasi: {password}')

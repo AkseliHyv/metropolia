@@ -4,7 +4,7 @@ while True:
     while True:
         sukupuoli = str.lower(input('Anna biologinen sukupuoli (nainen/mies): '))
         # Jos arvo on oikeassa muodossa, käytämme break statementtia karataksemme loopista.
-        if (sukupuoli == 'nainen') | (sukupuoli == 'mies'):
+        if (sukupuoli == 'nainen') or (sukupuoli == 'mies'):
             break
         else:
             print('Anna kelvollinen biologinen sukupuoli!')

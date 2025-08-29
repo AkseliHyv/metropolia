@@ -1,12 +1,7 @@
 while True:
     try:
         luku = int(input('Anna luku: '))
-        valid = True
-    except ValueError:
-        print('Annettu luku ei ole kokonaisnumero!')
-        valid = False
 
-    if valid:
         if luku <= 1: print('Luku ei ole alkuluku.')
         else:
             alkuluku = True
@@ -14,5 +9,7 @@ while True:
                 if luku % i == 0:
                     alkuluku = False
                     break
-
             print('Luku on alkuluku.' if alkuluku else 'Luku ei ole alkuluku.')
+
+    except ValueError:
+        print('Annettu luku ei ole kokonaisnumero!')

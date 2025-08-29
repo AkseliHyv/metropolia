@@ -2,7 +2,7 @@ correct_user = 'python'
 correct_pass = 'rules'
 guesses = 0
 
-while True:
+while guesses < 5:
     user = input('Anna käyttäjänimi: ')
     password = input('Anna salasana: ')
 
@@ -15,4 +15,3 @@ while True:
 
     if guesses == 5:
         print('Pääsy evätty.')
-        break

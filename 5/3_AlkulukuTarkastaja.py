@@ -12,7 +12,7 @@ while True:
             alkuluku = True
             for i in range(2, luku - 1):
                 if luku % i == 0:
-                    alkuluku == False
+                    alkuluku = False
                     break
 
             print('Luku on alkuluku.' if alkuluku else 'Luku ei ole alkuluku.')

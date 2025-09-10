@@ -1,6 +1,5 @@
 import mysql.connector
 
-dbname = input('Anna tietokannan nimi: ')
 user = input('Anna käyttäjänimi: ')
 password = input('Anna salasana: ')
 
@@ -8,7 +7,7 @@ try:
     connection = mysql.connector.connect(
          host='127.0.0.1',
          port= 3306,
-         database=dbname,
+         database="flight_game",
          user=user,
          password=password,
          autocommit=True

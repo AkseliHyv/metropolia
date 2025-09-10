@@ -1,8 +1,11 @@
+import random
+
 lentoasema_db = {}
 print('Tervetuloa lentoaseman hakuohjelmaan! Valitse alla olevista vaihtoehdoista:\n'
       '1 - Hae olemassa olevia lentoasemia\n'
       '2 - Lisää uusi lentoasema\n'
       '3 - Lopeta')
+
 while True:
     query = input()
 

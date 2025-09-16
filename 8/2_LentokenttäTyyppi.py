@@ -18,16 +18,12 @@ except mysql.connector.errors.ProgrammingError:
     exit(0)
 
 while True:
-    types = {}
     iso = input('Anna ISO-maakoodi: ')
-    cursor.execute("SELECT type FROM airport WHERE iso_country=%s", (iso,))
+    cursor.execute("SELECT type, count(*) FROM airport WHERE iso_country=%s GROUP BY type", (iso,))
     result = cursor.fetchall()
 
-    if cursor.rowcount > 0:
-        for type in result:
-            types[type[0]] = types.get(type[0], 0) + 1
-    else:
+    if cursor.rowcount == 0:
         print('ISO tunnus ei ole oikea')
 
-    for type in types:
-        print(types[type], type)
+    for type in result:
+        print(type)

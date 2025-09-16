@@ -19,10 +19,10 @@ except mysql.connector.errors.ProgrammingError:
 
 while True:
     icao = input('Anna ICAO-koodi: ')
-    cursor.execute("SELECT name FROM airport WHERE ident=%s", (icao,))
+    cursor.execute("SELECT name, municipality FROM airport WHERE ident=%s", (icao,))
     result = cursor.fetchall()
 
     if cursor.rowcount > 0:
-        print(result[0][0])
+        print(result[0])
     else:
         print('ICAO tunnus ei ole oikea')

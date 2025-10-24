@@ -1,6 +1,6 @@
 import requests
 
-api_key = "14316375e3c2d4d1f9d97b0c55d86560"
+api_key = ""
 
 while True:
     paikkakunta = input("Anna paikkakunta: ")

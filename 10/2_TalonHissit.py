@@ -10,9 +10,9 @@ class Hissi:
     def siirry_kerrokseen(self, kerros):
         while True:
             if self.kerros < kerros:
-                self.kerros += 1
+                self.kerros_ylös()
             elif self.kerros > kerros:
-                self.kerros -= 1
+                self.kerros_alas()
             else:
                 break
 

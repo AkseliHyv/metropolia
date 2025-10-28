@@ -1,0 +1,17 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-info {
+    position: relative;
+    width: 70%;
+    margin-top: 90px;
+}
+
+.contact-info img {
+    position: absolute;
+    right: 0;
+    top: 0;
+}

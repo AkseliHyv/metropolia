@@ -1,0 +1,61 @@
+html {
+    color: white;
+    font-size: 16px;
+    font-family:Arial, Helvetica, sans-serif
+}
+
+body {
+    margin: 0;
+    background-color: rgb(15, 15, 15);
+}
+
+header {
+    background-color: rgb(20, 20, 20);
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.logo-wrapper {
+    background-color: rgb(0, 0, 0);
+    height: 70px;
+    padding: 0 60px;
+    display: flex;
+    align-items: center;
+}
+
+header img {
+    height: 90%;
+}
+
+nav {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    position: relative;
+    display: flex;
+    height: 100%;
+    padding: 0 30px;
+    align-items: center;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+
+nav a::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, rgba(255,255,255,0.1), rgba(50,50,50,0.2));
+    opacity: 0;
+    transition: 200ms;
+}
+
+nav a:hover::before {
+    opacity: 1;
+}

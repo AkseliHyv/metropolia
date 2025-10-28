@@ -2,16 +2,18 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: calc(100vh - 70px);
 }
 
 .contact-info {
     position: relative;
     width: 70%;
-    margin-top: 90px;
+    display: flex;
+    height: 400px;
 }
 
 .contact-info img {
     position: absolute;
     right: 0;
-    top: 0;
+    height: 100%;
 }

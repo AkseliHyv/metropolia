@@ -4,5 +4,8 @@ url = "https://api.chucknorris.io/jokes/random"
 
 while True:
     input("Press enter for a joke...")
-    response = requests.get(url).json()
-    print(response["value"])
+    try:
+        response = requests.get(url).json()
+        print(response["value"])
+    except requests.exceptions.RequestException:
+        print("Error while fetching from API")

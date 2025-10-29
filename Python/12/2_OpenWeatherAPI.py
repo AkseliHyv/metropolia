@@ -5,7 +5,11 @@ api_key = ""
 while True:
     paikkakunta = input("Anna paikkakunta: ")
     url = f"http://api.openweathermap.org/geo/1.0/direct?q={paikkakunta}&appid={api_key}"
-    response = requests.get(url).json()
+    try:
+        response = requests.get(url).json()
+    except requests.exceptions.RequestException:
+        print("Error while fetching from API")
+        continue
     try:
         lat = response[0]["lat"]
         lon = response[0]["lon"]

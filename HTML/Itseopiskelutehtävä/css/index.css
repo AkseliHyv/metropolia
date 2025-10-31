@@ -14,4 +14,5 @@ main p {
 
 .hero-img {
     width: 550px;
+    border-radius: 5px;
 }

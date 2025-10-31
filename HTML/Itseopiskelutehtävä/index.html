@@ -21,8 +21,8 @@
     </header>
 
     <main>
-        <h1>Company X</h1>
-        <img class="hero-img" src="./img/heroimg.jpg" alt="company preview">
+        <h1>PC Part Shop</h1>
+        <img class="hero-img" src="./img/heroimg.webp" alt="company preview">
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, nulla nec ullamcorper fermentum, magna nisi tempor nulla, et aliquam lacus libero ac magna. Cras vitae magna odio. Donec non velit ut ante porta iaculis. Aliquam lacinia, velit eget accumsan interdum, nisi elit efficitur dui, vitae iaculis nisi justo sed enim</p>
     </main>
 </body>
@@ -31,7 +31,9 @@
 <script>
     let main = document.querySelector("main");
     function relocate(url) {
-        main.style.animation="fade-out 0.2s forwards"
+        for (const child of main.children) {
+            child.style.animation="fade-out 0.2s forwards"
+        }
         setTimeout(function(){window.location.href = url}, 250)
     }
 </script>

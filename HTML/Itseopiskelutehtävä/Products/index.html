@@ -23,7 +23,7 @@
     <main>
         <div class="description-container">
             <h1>
-                <img class="cover-img" src="../img/products-long.webp" alt="products overview">
+                <img class="cover-img" src="../img/products-img.jpg" alt="products overview">
             </h1>
 
             <p class="info-text">
@@ -34,22 +34,28 @@
 
         <div class="card-holder">
             <div class="card">
-                <h2>Product 1</h2>
-                <img src="../img/product1.jpg" alt="product 1 preview">
+                <h2>Graphics Card</h2>
+                <div class="product-img-holder">
+                    <img src="../img/product1.png" alt="product 2 preview">
+                </div>
                 <p class="product-img-text">product 1</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, nulla nec ullamcorper fermentum, magna nisi tempor nulla, et aliquam lacus libero ac magna. Cras vitae magna odio. Donec non velit ut ante porta iaculis. Aliquam lacinia, velit eget accumsan interdum, nisi elit efficitur dui, vitae iaculis nisi justo sed enim</p>
             </div>
 
             <div class="card">
-                <h2>Product 2</h2>
-                <img src="../img/product2.jpg" alt="product 2 preview">
+                <h2>CPU</h2>
+                <div class="product-img-holder">
+                    <img src="../img/product2.png" alt="product 2 preview">
+                </div>
                 <p class="product-img-text">product 2</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, nulla nec ullamcorper fermentum, magna nisi tempor nulla, et aliquam lacus libero ac magna. Cras vitae magna odio. Donec non velit ut ante porta iaculis. Aliquam lacinia, velit eget accumsan interdum, nisi elit efficitur dui, vitae iaculis nisi justo sed enim</p>
             </div>
 
             <div class="card">
-                <h2>Product 3</h2>
-                <img src="../img/product3.jpg" alt="product 3 preview">
+                <h2>Motherboard</h2>
+                <div class="product-img-holder">
+                    <img src="../img/product3.png" alt="product 2 preview">
+                </div>
                 <p class="product-img-text">product 3</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, nulla nec ullamcorper fermentum, magna nisi tempor nulla, et aliquam lacus libero ac magna. Cras vitae magna odio. Donec non velit ut ante porta iaculis. Aliquam lacinia, velit eget accumsan interdum, nisi elit efficitur dui, vitae iaculis nisi justo sed enim</p>
             </div>
@@ -61,7 +67,9 @@
 <script>
     let main = document.querySelector("main");
     function relocate(url) {
-        main.style.animation="fade-out 0.2s forwards"
+        for (const child of main.children) {
+            child.style.animation="fade-out 0.2s forwards"
+        }
         setTimeout(function(){window.location.href = url}, 250)
     }
 </script>

@@ -44,7 +44,9 @@
 <script>
     let main = document.querySelector("main");
     function relocate(url) {
-        main.style.animation="fade-out 0.2s forwards"
+        for (const child of main.children) {
+            child.style.animation="fade-out 0.2s forwards"
+        }
         setTimeout(function(){window.location.href = url}, 250)
     }
 </script>

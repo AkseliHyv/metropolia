@@ -14,16 +14,16 @@
         </div>
 
         <nav>
-            <a href="../index.html">Home</a>
-            <a href="../Products/">Products</a>
-            <a href="../Contact/">Contact</a>
+            <a onclick="relocate('../index.html')">Home</a>
+            <a onclick="relocate('../Products')">Products</a>
+            <a onclick="relocate('../Contact')">Contact</a>
         </nav>
     </header>
 
     <main>
         <div class="description-container">
             <h1>
-                <img class="cover-img" src="../img/landfill-long.webp" alt="products overview">
+                <img class="cover-img" src="../img/products-long.webp" alt="products overview">
             </h1>
 
             <p class="info-text">
@@ -35,21 +35,21 @@
         <div class="card-holder">
             <div class="card">
                 <h2>Product 1</h2>
-                <img src="../img/logo.png" alt="product 1 preview">
+                <img src="../img/product1.jpg" alt="product 1 preview">
                 <p class="product-img-text">product 1</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, nulla nec ullamcorper fermentum, magna nisi tempor nulla, et aliquam lacus libero ac magna. Cras vitae magna odio. Donec non velit ut ante porta iaculis. Aliquam lacinia, velit eget accumsan interdum, nisi elit efficitur dui, vitae iaculis nisi justo sed enim</p>
             </div>
 
             <div class="card">
                 <h2>Product 2</h2>
-                <img src="../img/logo.png" alt="product 2 preview">
+                <img src="../img/product2.jpg" alt="product 2 preview">
                 <p class="product-img-text">product 2</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, nulla nec ullamcorper fermentum, magna nisi tempor nulla, et aliquam lacus libero ac magna. Cras vitae magna odio. Donec non velit ut ante porta iaculis. Aliquam lacinia, velit eget accumsan interdum, nisi elit efficitur dui, vitae iaculis nisi justo sed enim</p>
             </div>
 
             <div class="card">
                 <h2>Product 3</h2>
-                <img src="../img/logo.png" alt="product 3 preview">
+                <img src="../img/product3.jpg" alt="product 3 preview">
                 <p class="product-img-text">product 3</p>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus, nulla nec ullamcorper fermentum, magna nisi tempor nulla, et aliquam lacus libero ac magna. Cras vitae magna odio. Donec non velit ut ante porta iaculis. Aliquam lacinia, velit eget accumsan interdum, nisi elit efficitur dui, vitae iaculis nisi justo sed enim</p>
             </div>
@@ -57,3 +57,11 @@
     </main>
 </body>
 </html>
+
+<script>
+    let main = document.querySelector("main");
+    function relocate(url) {
+        main.style.animation="fade-out 0.2s forwards"
+        setTimeout(function(){window.location.href = url}, 250)
+    }
+</script>

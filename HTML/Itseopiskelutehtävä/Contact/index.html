@@ -14,9 +14,9 @@
         </div>
 
         <nav>
-            <a onclick="relocate('../index.html')">Home</a>
-            <a onclick="relocate('../Products')">Products</a>
-            <a onclick="relocate('../Contact')">Contact</a>
+            <a href="../">Home</a>
+            <a href="../Products">Products</a>
+            <a href="../Contact/">Contact</a>
         </nav>
     </header>
 
@@ -40,13 +40,3 @@
     </main>
 </body>
 </html>
-
-<script>
-    let main = document.querySelector("main");
-    function relocate(url) {
-        for (const child of main.children) {
-            child.style.animation="fade-out 0.2s forwards"
-        }
-        setTimeout(function(){window.location.href = url}, 250)
-    }
-</script>

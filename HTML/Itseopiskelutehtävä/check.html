@@ -8,7 +8,7 @@
     <title>PC Part Shop - Check Scores</title>
 </head>
 <body>
-    <div class="grid-container">
+    <section class="grid-container">
         <img class="grid-img" src="./checkscores/lighthome.webp"/>
         <img class="grid-img padd" src="./checkscores/darkhome.webp"/>
 
@@ -17,13 +17,29 @@
 
         <img class="grid-img" src="./checkscores/lightcontact.webp"/>
         <img class="grid-img" src="./checkscores/darkcontact.webp"/>
-    </div>
 
+        <img class="grid-img" src="./checkscores/lightscorehome.webp"/>
+        <img class="grid-img" src="./checkscores/lightscoreproducts.webp"/>
+        <img class="grid-img" src="./checkscores/lightscorecontacts.webp"/>
+    </section>
+
+    <section class="font-info">
+        <h1>Font</h1>
+        <p>Font is the basic "Arial, Helvetica, sans-serif". I originally went with a Google Font called <a href="https://fonts.google.com/specimen/Elms+Sans">Elms Sans</a>, but it ruined load times so I removed it.
+<pre>body {
+    font-family: Arial, Helvetica, sans-serif;
+}</pre>
+    </section>
+    
 <style>
     body {
+        font-family: Arial, Helvetica, sans-serif;
         background-color: rgb(30,30,30);
+        color: white;
         overflow-x: hidden;
+        padding-bottom: 100px;
     }
+
     .grid-container {
         display: flex;
         flex-wrap: wrap;
@@ -35,6 +51,22 @@
 
     .grid-img {
         width: 45%;
+    }
+
+    .font-info {
+        padding: 10px 30px;
+        width: 30vw;
+
+        border: 1px solid rgb(80,80,80);
+        border-radius: 20px;
+        background-color: rgb(20,20,20);
+        margin: 0px auto;
+    }
+
+    pre {
+        background-color: rgb(40,40,40);
+        padding: 10px;
+        border-radius: 10px;
     }
 </style>
 </body>

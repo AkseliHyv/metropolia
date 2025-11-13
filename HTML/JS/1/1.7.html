@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehtävä 1.7</title>
+</head>
+<body>
+    <h1>Tehtävä 1.7</h1>
+    <p id="target"></p>
+    <button onclick="roll()">reroll</button>
+<script>
+    function roll() {
+        const target = document.getElementById("target");
+        target.innerHTML = "";
+        
+        const rolls = parseInt(prompt("Give number of dice rolls:"))
+        let sum = 0
+        
+        for (let i = 0; i < rolls; i++) {
+            dice_roll = Math.floor(Math.random() * 6 + 1)
+            sum += dice_roll
+            target.innerHTML += `Dice ${i + 1}: ${dice_roll}<br>`
+        }
+
+        target.innerHTML += `Sum of all dice: ${sum}`
+    }
+
+    roll()
+</script>
+</body>
+</html>

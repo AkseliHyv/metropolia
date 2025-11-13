@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehtävä 1.3</title>
+</head>
+<body>
+    <h1>Tehtävä 1.3</h1>
+    <p id="sum">Sum: </p>
+    <p id="product">Product: </p>
+    <p id="average">Average: </p>
+
+<script>
+    const int1 = parseInt(prompt("Give first integer:"));
+    const int2 = parseInt(prompt("Give second integer:"));
+    const int3 = parseInt(prompt("Give third integer:"));
+
+    document.getElementById("sum").innerHTML += int1 + int2 + int3;
+    document.getElementById("product").innerHTML += int1 * int2 * int3;
+    document.getElementById("average").innerHTML += (int1 + int2 + int3) / 3;
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehtävä 2.8</title>
+</head>
+<body>
+    <h1>Tehtävä 2.8</h1>
+    <p id="target"></p>
+<script>
+    function concat(list) {
+        let concat_string = "";
+        for (let name of list) {
+            concat_string += name;
+        }
+
+        return concat_string;
+    }
+    
+    const list_names = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Hannah", "Ivan", "Judy"];
+    document.getElementById("target").innerHTML = concat(list_names);
+</script>
+</body>
+</html>

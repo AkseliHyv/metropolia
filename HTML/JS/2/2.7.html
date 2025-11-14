@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehtävä 2.7</title>
+</head>
+<body>
+    <h1>Tehtävä 2.7</h1>
+    <ul id="target"></ul>
+<script>
+    function rollDice(faces) {
+        return Math.floor(Math.random() * faces) + 1;
+    }
+
+    const faces = parseInt(prompt("Enter the number of faces on the dice:"));
+
+    let roll = 0;
+    let rolls = [];
+    while (roll !== faces) {
+        roll = rollDice(faces);
+        rolls.push(roll);
+    }
+
+    for (let roll of rolls) {
+        const li = document.createElement("li");
+        li.innerHTML = roll;
+        document.getElementById("target").appendChild(li);
+    }
+</script>
+</body>
+</html>

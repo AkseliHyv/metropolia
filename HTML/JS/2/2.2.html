@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tehtävä 2.2</title>
+</head>
+<body>
+    <h1>Tehtävä 2.2</h1>
+    <ol id="target"></ol>
+<script>
+    const participants_amount = parseInt(prompt("Enter number of participants:"));
+    let participants = [];
+    
+    for (let i = 0; i < participants_amount; i++) {
+        participants.push(prompt(`Enter name of participant ${i + 1}:`));
+    }
+    participants.sort();
+
+    const ol = document.getElementById("target");
+    for (let participant of participants) {
+        const li = document.createElement("li");
+        li.innerHTML = participant;
+        ol.appendChild(li);
+    }
+</script>
+</body>
+</html>

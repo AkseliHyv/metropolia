@@ -1,0 +1,22 @@
+#include "headers.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(void)
+{
+    int numbers[ARRAY_SIZE];
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+        numbers[i] = rand();
+    }
+    print_numbers(numbers, ARRAY_SIZE);
+    return 1;
+}
+
+void print_numbers(const int *array, int count)
+{
+    for (int i = 0; i < count; i++)
+    {
+        printf("%8d\n", array[i]);
+    }
+}

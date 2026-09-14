@@ -1,6 +1,16 @@
 #include "headers.h"
 
+int main(void)
+{
 
+
+    return 0;
+}
+
+int find_first(const unsigned int *array, unsigned int what)
+{
+    while 
+}
 
 /*
 Write a function called find_first that takes two parameters: pointer to constant unsigned integers

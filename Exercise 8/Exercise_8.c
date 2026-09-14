@@ -10,7 +10,7 @@ int main(void)
         numbers[i] = rand();
     }
     print_numbers(numbers, ARRAY_SIZE);
-    return 1;
+    return 0;
 }
 
 void print_numbers(const int *array, int count)

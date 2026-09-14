@@ -20,7 +20,7 @@ int main(void)
         }
     }
     printf("I give up. See ya.\n");
-    return 1;
+    return 0;
     
 }
 

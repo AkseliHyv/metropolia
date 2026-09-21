@@ -1,30 +1,84 @@
 #include "headers.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <stdbool.h>
 
 int main(void)
 {
+    srand(time(NULL));
+    unsigned int numbers[ARRAY_SIZE];
+    fill_array(numbers, ARRAY_SIZE);
+    print_array(numbers);
 
-
+    int input;
+    do
+    {
+        input = get_input();
+        handle_input(numbers, input);
+    } while (input != 0);
     return 0;
 }
 
-int find_first(const unsigned int *array, unsigned int what)
+void fill_array(unsigned int *array, const int size)
 {
-    while 
+    for (int i = 0; i < size - 1; i++)
+    {
+        array[i] = 1 + rand() % 20;
+    }
+    array[size - 1] = 0;
 }
 
-/*
-Write a function called find_first that takes two parameters: pointer to constant unsigned integers
-and an unsigned integer to find and returns an integer.
-int find_first(const unsigned int *array, unsigned int what);
-The function searches for the given number in the array until it is found or the current number in the
-array is zero. If the number is not found until a zero is seen the program returns -1. If the number is
-found function returns the index at which the number was found. Note that we don’t pass the size of
-the array as a parameter but we use zero as an end marker to stop at the end of the array.
-Write a program that defines an array of 20 integers and fills the first 19 elements with random
-numbers in range 1 - 20 and puts a zero as the last number in the array. The program prints the array
-one number per line.
-Program then asks user to enter number to search for or zero to stop. If the number is not zero
-program calls find_first to see if the number occurs in the array. If the number is found it prints the
-index where the number is found or “not found”. If user enters zero, the program stops otherwise
-program asks again user to enter a number to find.s
-*/
+void print_array(const unsigned int *array)
+{
+    int i = 0;
+    while (array[i] != 0)
+    {
+        printf("%u\n", array[i]);
+        i++;
+    }
+    printf("%u\n", array[i]);
+}
+
+int get_input(void)
+{
+    int input;
+    bool valid = false;
+    do
+    {
+        printf("Enter a number to search for or enter 0 to quit:\n");
+        valid = scanf("%d", &input);
+        while (getchar() != '\n') {}
+    } while (!valid);
+    return input;
+}
+
+void handle_input(const unsigned int *array, int input)
+{
+    if (input != 0)
+    {
+        const int index = find_first(array, input);
+        if (index != -1)
+        {
+            printf("Number found at index %d\n", index);
+        }
+        else
+        {
+            printf("Number not found.\n");
+        }
+    }
+}
+
+int find_first(const unsigned int *array, const unsigned int what)
+{
+    int i = 0;
+    while (array[i] != 0)
+    {
+        if (array[i] == what)
+        {
+            return i;
+        }
+        i++;
+    }
+    return -1;
+}

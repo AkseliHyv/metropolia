@@ -1,9 +1,11 @@
 #include "headers.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 int main(void)
 {
+    srand(time(NULL));
     int numbers[ARRAY_SIZE];
     for (int i = 0; i < ARRAY_SIZE; i++)
     {

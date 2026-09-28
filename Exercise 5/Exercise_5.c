@@ -8,7 +8,7 @@ int main(void)
     for (int i = 0; i < ROUNDS; i++)
     {
         const int result = read_range(LOW, HIGH);
-        if (result != 6)
+        if (result != HIGH)
         {
             printf("I got %d. I win.\n", result + 1);
         }
@@ -18,15 +18,16 @@ int main(void)
         }
     }
     printf("Game over.\n");
+    return 0;
 }
 
 int read_range(const int low, const int high) {
-    bool valid = false;
+    bool valid;
     int number;
     do
     {
         printf("Roll a die and enter your result.\nEnter a number between %d and %d: ", low, high);
-        valid = scanf("%d", &number) == 1;
+        valid = scanf("%d", &number);
         if (!valid)
         {
             printf("Invalid input.\n");

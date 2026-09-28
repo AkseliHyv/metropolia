@@ -18,23 +18,22 @@ int main(void) {
     } while (number >= 0);
 
     average(number_total, numbers_added);
-
     return 0;
 }
 
 int read_integer(void) {
-    bool passed = false;
+    bool valid;
     int number;
     do
     {
         printf("Enter positive numbers or negative to stop: ");
-        passed = scanf("%d", &number) == 1 && number != 0;
-        if (!passed)
+        valid = scanf("%d", &number) && number != 0;
+        if (!valid)
         {
             printf("Invalid input.\n");
         }
         while (getchar() != '\n') {}
-    } while (!passed);
+    } while (!valid);
     return number;
 }
 

@@ -47,7 +47,7 @@ int get_input(void)
     do
     {
         printf("Enter a number to search for or enter 0 to quit:\n");
-        valid = scanf("%d", &input);
+        valid = scanf("%d", &input) && input >= 0;
         while (getchar() != '\n') {}
     } while (!valid);
     return input;

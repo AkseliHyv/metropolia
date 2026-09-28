@@ -4,6 +4,7 @@
 
 #define MULTIPLIER 2
 #define ADDITIVE 20
+#define INCORRECT_LIMIT 3
 
 bool read_positive(int *value);
 

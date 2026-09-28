@@ -5,7 +5,7 @@ int main(void)
 {
     int guess;
     int incorrect_values = 0;
-    while (incorrect_values < 3)
+    while (incorrect_values < INCORRECT_LIMIT)
     {
 
         if (read_positive(&guess))

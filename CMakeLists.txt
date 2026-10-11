@@ -18,5 +18,6 @@ include_directories("Exercise 12")
 
 
 add_executable(c_exercises
-        "Exercise 9/Exercise_9.c"
-        "Exercise 9/headers.h")
+        "Project/main.c"
+        "Project/headers.h"
+)

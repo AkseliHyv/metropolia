@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Write a program that reads lines of text in to an array of strings. The maximum length of the line is
 80 characters and the maximum number of lines is 100.

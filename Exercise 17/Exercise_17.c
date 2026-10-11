@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Write a password generator function that takes three parameters: character pointer, integer (size of
 the array), a const char pointer (a word) and returns a bool. The function generates password and

@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug exercise",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${fileDirname}/exercise",
+            "cwd": "${fileDirname}",
+            "preLaunchTask": "Build exercise",
+            "terminal": "integrated"
+        }
+    ]
+}

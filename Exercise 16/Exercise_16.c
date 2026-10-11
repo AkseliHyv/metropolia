@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Write a program that asks user to enter numbers or to enter end to stop entering numbers. If user
 enters any other text except end the program prints an error message and discards the input. The

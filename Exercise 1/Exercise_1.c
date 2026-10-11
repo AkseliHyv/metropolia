@@ -1,18 +1,18 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-float busPrice, taxiPrice, balance;
+float bus_price, taxi_price, balance;
 
 void init(void) {
     bool passed;
     do { // Stay in loop till scanf successfully 
         printf("Enter price of bus ticket: ");
-        passed = scanf("%f", &busPrice) == 1 && busPrice >= 0;
+        passed = scanf("%f", &bus_price) == 1 && bus_price >= 0;
         while (getchar() != '\n'); // Clear everything left over from buffer after the scan
     } while (!passed);
     do {
         printf("Enter price of taxi: ");
-        passed = scanf("%f", &taxiPrice) == 1 && taxiPrice >= 0;
+        passed = scanf("%f", &taxi_price) == 1 && taxi_price >= 0;
         while (getchar() != '\n');
     } while (!passed);
     do {
@@ -22,12 +22,12 @@ void init(void) {
     } while (!passed);
 }
 
-int getTravelMethod(void) {
+int get_travel_method(void) {
     bool passed;
     int option;
     do {
         printf("How do you want to travel\n 1.) Bus (%.2f€)\n 2.) Taxi (%.2f€)\nEnter option: ",
-            busPrice, taxiPrice);
+            bus_price, taxi_price);
         passed = scanf("%d", &option);
         while (getchar() != '\n');
     } while (!passed);
@@ -37,17 +37,17 @@ int getTravelMethod(void) {
 void travel(int option) {
     switch (option) {
         case 1:
-            if (busPrice > balance) printf("You can't afford the ticket.\n");
+            if (bus_price > balance) printf("You can't afford the ticket.\n");
             else {
                 printf("You traveled by bus.\n");
-                balance -= busPrice;
+                balance -= bus_price;
             }
             break;
         case 2:
-            if (taxiPrice > balance) printf("You can't afford the ticket.\n");
+            if (taxi_price > balance) printf("You can't afford the ticket.\n");
             else {
                 printf("You traveled by taxi.\n");
-                balance -= taxiPrice;
+                balance -= taxi_price;
             }
             break;
         default:
@@ -59,8 +59,8 @@ void travel(int option) {
 
 int main(void) {
     init();
-    while (balance >= busPrice || balance >= taxiPrice) {
-        travel(getTravelMethod());
+    while (balance >= bus_price || balance >= taxi_price) {
+        travel(get_travel_method());
     }
     printf("Take a hike brokie.\n");
 }

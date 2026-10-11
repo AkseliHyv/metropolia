@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Write a program that asks user to enter a filename. Then program tries to open the file in textmode
 for reading. If opening the file fails the program prints an error message with the filename to stderr

@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Implement a program that consists of three files: main.c, debug.c and debug.h.
 

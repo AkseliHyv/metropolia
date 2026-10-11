@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Write a program that reads data from a text file into an array of structures. The size of the array is 40
 elements.

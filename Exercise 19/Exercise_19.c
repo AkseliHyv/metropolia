@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Extend program of Ex15 so that after reading the file content the program asks user to choose
 sorting order of the menu. User can choose to sort by price or by name.

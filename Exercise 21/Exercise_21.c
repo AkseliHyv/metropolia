@@ -1,5 +1,10 @@
 #include "headers.h"
 
+int main(void)
+{
+    return 0;
+}
+
 /*
 Write a program that asks user to enter a file name. Program opens the file in text mode. The file is
 supposed to contain NMEA (GPS) data. Program looks for lines that start with ‘$’ and have an

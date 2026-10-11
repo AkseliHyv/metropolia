@@ -1,4 +1,81 @@
 #include "headers.h"
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    char string[MAX_STRING_LENGTH];
+    char replace_pair[REPLACE_PAIR_BUFLENGTH];
+
+    if (!read_string(string, MAX_STRING_LENGTH, "Enter a string: "))
+    {
+        return 1;
+    }
+
+    if (!read_string(replace_pair, REPLACE_PAIR_BUFLENGTH, "Enter a replacement pair (eg. 'ae' to replace every 'a' with 'e'): "))
+    {
+        return 1;
+    }
+
+    const int amount_changed = replace_char(string, replace_pair);
+    if (amount_changed > 0)
+    {
+        printf("Amount of letters changed: '%d'\nNew string: '%s'\n", amount_changed, string);
+    }
+    else
+    {
+        printf("String was not modified.\n");
+    }
+
+    return 0;
+}
+
+bool read_string(char *string, const int size, const char *prompt)
+{
+    printf("%s", prompt);
+    if (fgets(string, size, stdin) == NULL)
+    {
+        return false;
+    }
+
+    const size_t string_length = strlen(string);
+    if (string[string_length - 1] == '\n')
+    {
+        string[string_length - 1] = '\0';
+    }
+    else
+    {
+        clear_input();
+    }
+    return true;
+}
+
+void clear_input(void)
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+    }
+}
+
+int replace_char(char *string, const char *replace_pair)
+{
+    if (strlen(replace_pair) != REPLACE_PAIR_LENGTH)
+    {
+        return 0;
+    }
+
+    int amount_changed = 0;
+    for (int i = 0; string[i] != '\0'; i++)
+    {
+        if (string[i] == replace_pair[0])
+        {
+            string[i] = replace_pair[1];
+            amount_changed++;
+        }
+    }
+    return amount_changed;
+}
 
 /*
 Write a function called replace_char that takes two strings as parameters and returns an integer.
@@ -13,6 +90,6 @@ int replace_char(char *str, const char *repl);
 The function returns the number of characters replaced. The return value can be zero if no
 characters were found or if the second string does not contain two characters.
 Write a program that asks user to enter both strings and then calls replace_char. The program prints
-both return value and the modified string if the return value is greater than zero. If the return value
-is zero program prints “String was not modified”.
+both return value and the modified string if the return value is greater than zero. If the return
+value is zero program prints “String was not modified”.
 */

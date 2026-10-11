@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build exercise",
+            "type": "shell",
+            "command": "gcc -Wall -Wextra -g *.c -o exercise",
+            "options": { "cwd": "${fileDirname}" },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": ["relative", "${fileDirname}"]
+            },
+            "group": "build"
+        },
+        {
+            "label": "Build and run exercise",
+            "type": "shell",
+            "command": "./exercise",
+            "options": { "cwd": "${fileDirname}" },
+            "dependsOn": "Build exercise",
+            "presentation": { "focus": true, "panel": "dedicated", "clear": true },
+            "problemMatcher": [],
+            "group": { "kind": "build", "isDefault": true }
+        }
+    ]
+}

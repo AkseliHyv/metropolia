@@ -1,7 +1,13 @@
 #ifndef HEADERS_H
 #define HEADERS_H
+#include <stdbool.h>
 
-#define VARIABLE 3
-int function(char letter, int num);
+#define MAX_STRING_LENGTH 100
+#define MAX_WORD_LENGTH 15
+#define STOP_WORD "stop"
+
+bool read_string(char *string, const int size, const char *prompt);
+void clear_input(void);
+int count_words(const char* string, const char *word);
 
 #endif // HEADERS_H

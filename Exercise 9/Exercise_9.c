@@ -1,8 +1,8 @@
 #include "headers.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <time.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main(void)
 {
@@ -48,7 +48,9 @@ int get_input(void)
     {
         printf("Enter a number to search for or enter 0 to quit:\n");
         valid = scanf("%d", &input) && input >= 0;
-        while (getchar() != '\n') {}
+        while (getchar() != '\n')
+        {
+        }
     } while (!valid);
     return input;
 }

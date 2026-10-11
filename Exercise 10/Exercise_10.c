@@ -39,15 +39,9 @@ bool read_string(char *string, const int size)
     }
     else
     {
-        clear_input();
+        while ((getchar()) != '\n')
+        {
+        }
     }
     return true;
-}
-
-void clear_input(void)
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-    {
-    }
 }

@@ -12,7 +12,8 @@ int main(void)
         return 1;
     }
 
-    if (!read_string(replace_pair, REPLACE_PAIR_BUFLENGTH, "Enter a replacement pair (eg. 'ae' to replace every 'a' with 'e'): "))
+    if (!read_string(replace_pair, REPLACE_PAIR_BUFLENGTH,
+                     "Enter a replacement pair (eg. 'ae' to replace every 'a' with 'e'): "))
     {
         return 1;
     }
@@ -45,17 +46,11 @@ bool read_string(char *string, const int size, const char *prompt)
     }
     else
     {
-        clear_input();
+        while ((getchar()) != '\n')
+        {
+        }
     }
     return true;
-}
-
-void clear_input(void)
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-    {
-    }
 }
 
 int replace_char(char *string, const char *replace_pair)

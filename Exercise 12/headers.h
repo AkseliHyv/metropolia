@@ -7,7 +7,6 @@
 #define STOP_WORD "stop"
 
 bool read_string(char *string, const int size, const char *prompt);
-void clear_input(void);
 int count_words(const char* string, const char *word);
 
 #endif // HEADERS_H

@@ -1,6 +1,7 @@
 #include "headers.h"
 #include <stddef.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main(void)
@@ -11,32 +12,39 @@ int main(void)
 
     while (!done)
     {
-        if (!read_string(string, MAX_STRING_LENGTH, "Enter a sentence: "))
-        {
-            done = true;
-        }
-        else if (!read_string(word, MAX_WORD_LENGTH, "Enter a word (or 'stop' to end): "))
-        {
-            done = true;
-        }
-        else if (strcmp(word, STOP_WORD) == 0)
+        printf("Enter a sentence: ");
+        if (!read_string(string, MAX_STRING_LENGTH))
         {
             done = true;
         }
         else
         {
-            const int occurences = count_words(string, word);
-            printf("The word '%s' was found %d times in the sentence '%s'.\n", word, occurences,
-                   string);
+            printf("Enter a word (or 'stop' to end): ");
+            if (!read_string(word, MAX_WORD_LENGTH))
+            {
+                done = true;
+            }
+            else if (strcmp(word, STOP_WORD) == 0)
+            {
+                done = true;
+            }
+            else
+            {
+                const int occurences = count_words(string, word);
+                printf("The word '%s' was found %d times in the sentence '%s'.\n", word, occurences,
+                       string);
+            }
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
-bool read_string(char *string, const int size, const char *prompt)
+// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
+// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
+// read.
+bool read_string(char *string, const int size)
 {
-    printf("%s", prompt);
     if (fgets(string, size, stdin) == NULL)
     {
         return false;
@@ -56,6 +64,8 @@ bool read_string(char *string, const int size, const char *prompt)
     return true;
 }
 
+// Counts how many times 'word' occurs in 'string', skipping past each found occurrence.
+// Returns 0 if 'word' is empty.
 int count_words(const char *string, const char *word)
 {
     const size_t word_size = strlen(word);

@@ -6,7 +6,7 @@
 #define MAX_WORD_LENGTH 15
 #define STOP_WORD "stop"
 
-bool read_string(char *string, const int size, const char *prompt);
+bool read_string(char *string, const int size);
 int count_words(const char* string, const char *word);
 
 #endif // HEADERS_H

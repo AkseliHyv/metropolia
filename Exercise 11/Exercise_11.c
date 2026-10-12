@@ -1,5 +1,6 @@
 #include "headers.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main(void)
@@ -7,15 +8,16 @@ int main(void)
     char string[MAX_STRING_LENGTH];
     char replace_pair[REPLACE_PAIR_BUFLENGTH];
 
-    if (!read_string(string, MAX_STRING_LENGTH, "Enter a string: "))
+    printf("Enter a string: ");
+    if (!read_string(string, MAX_STRING_LENGTH))
     {
-        return 1;
+        return EXIT_FAILURE;
     }
 
-    if (!read_string(replace_pair, REPLACE_PAIR_BUFLENGTH,
-                     "Enter a replacement pair (eg. 'ae' to replace every 'a' with 'e'): "))
+    printf("Enter a replacement pair (eg. 'ae' to replace every 'a' with 'e'): ");
+    if (!read_string(replace_pair, REPLACE_PAIR_BUFLENGTH))
     {
-        return 1;
+        return EXIT_FAILURE;
     }
 
     const int amount_changed = replace_char(string, replace_pair);
@@ -28,12 +30,14 @@ int main(void)
         printf("String was not modified.\n");
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
-bool read_string(char *string, const int size, const char *prompt)
+// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
+// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
+// read.
+bool read_string(char *string, const int size)
 {
-    printf("%s", prompt);
     if (fgets(string, size, stdin) == NULL)
     {
         return false;
@@ -53,6 +57,9 @@ bool read_string(char *string, const int size, const char *prompt)
     return true;
 }
 
+// Replaces every occurrence of the first character of 'replace_pair' in 'string' with its
+// second character. Returns the amount of characters replaced, or 0 if 'replace_pair'
+// is not exactly two characters long.
 int replace_char(char *string, const char *replace_pair)
 {
     if (strlen(replace_pair) != REPLACE_PAIR_LENGTH)

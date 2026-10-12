@@ -1,6 +1,7 @@
 #include "headers.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 int main(void)
@@ -21,9 +22,12 @@ int main(void)
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
+// Asks the user for input into 'string', which can hold 'size' characters including the '\0'.
+// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
+// read.
 bool read_string(char *string, const int size)
 {
     printf("Enter a string (or type 'stop' to quit): ");

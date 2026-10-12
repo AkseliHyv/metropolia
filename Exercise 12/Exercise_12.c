@@ -69,9 +69,9 @@ bool read_string(char *string, const int size)
 int count_words(const char *string, const char *word)
 {
     const size_t word_size = strlen(word);
-    bool nul_reached = false;
+    bool matches_remaining = true;
     int occurences = 0;
-    while (!nul_reached)
+    while (matches_remaining)
     {
         const char *occurence = strstr(string, word);
         if (occurence != NULL && word_size != 0)
@@ -81,7 +81,7 @@ int count_words(const char *string, const char *word)
         }
         else
         {
-            nul_reached = true;
+            matches_remaining = false;
         }
     }
     return occurences;

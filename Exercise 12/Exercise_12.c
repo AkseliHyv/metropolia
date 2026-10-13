@@ -1,5 +1,4 @@
 #include "headers.h"
-#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,8 +30,8 @@ int main(void)
             else
             {
                 const int occurrences = count_words(string, word);
-                printf("The word '%s' was found %d times in the sentence '%s'.\n", word, occurrences,
-                       string);
+                printf("The word '%s' was found %d times in the sentence '%s'.\n", word,
+                       occurrences, string);
             }
         }
     }

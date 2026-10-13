@@ -30,8 +30,8 @@ int main(void)
             }
             else
             {
-                const int occurences = count_words(string, word);
-                printf("The word '%s' was found %d times in the sentence '%s'.\n", word, occurences,
+                const int occurrences = count_words(string, word);
+                printf("The word '%s' was found %d times in the sentence '%s'.\n", word, occurrences,
                        string);
             }
         }
@@ -70,21 +70,21 @@ int count_words(const char *string, const char *word)
 {
     const size_t word_size = strlen(word);
     bool matches_remaining = true;
-    int occurences = 0;
+    int occurrences = 0;
     while (matches_remaining)
     {
-        const char *occurence = strstr(string, word);
-        if (occurence != NULL && word_size != 0)
+        const char *occurrence = strstr(string, word);
+        if (occurrence != NULL && word_size != 0)
         {
-            string = occurence + word_size;
-            occurences++;
+            string = occurrence + word_size;
+            occurrences++;
         }
         else
         {
             matches_remaining = false;
         }
     }
-    return occurences;
+    return occurrences;
 }
 
 /*

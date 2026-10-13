@@ -87,7 +87,7 @@ void to_upper(const int line_length, char lines[][line_length], const int line_c
 {
     for (int l = 0; l < line_count; l++)
     {
-        for (int c = 0; c != '\0'; c++)
+        for (int c = 0; lines[l][c] != '\0'; c++)
         {
             lines[l][c] = toupper(lines[l][c]);
         }

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 #define MAX_STRING_LENGTH 100
-#define MAX_WORD_LENGTH 15
+#define MAX_WORD_LENGTH 25
 #define STOP_WORD "stop"
 
 bool read_string(char *string, const int size);

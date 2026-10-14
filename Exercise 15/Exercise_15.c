@@ -27,7 +27,7 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Reads input from stdin into 'string', which holds 'size' amount of characters.
 // Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {

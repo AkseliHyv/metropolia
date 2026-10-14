@@ -1,7 +1,25 @@
-#include "headers.h"
+#include "debug.h"
+#include <stdio.h>
+#include <stdarg.h>
+static int static_debug_level = 0;
 
-int main(void)
+void set_debug_level(int debug_level)
 {
+    static_debug_level = debug_level;
+}
+
+int dprintf(int debug_level, const char *fmt, ...)
+{
+    if (debug_level <= static_debug_level)
+    {
+        va_list args;
+        
+        fprintf(stderr, "[DBG%d] ", debug_level);
+
+        va_start(args, fmt);
+        vfprintf(stderr, fmt, args);
+        va_end(args);
+    }
     return 0;
 }
 

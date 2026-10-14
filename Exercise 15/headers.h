@@ -1,10 +1,11 @@
 #ifndef HEADERS_H
 #define HEADERS_H
+#include <limits.h>
 #include <stdbool.h>
 
 #define MAX_FILE_NAME_SIZE 20
 #define MAX_ITEM_AMOUNT 40
-#define NO_PRICE_VALUE (-1000)
+#define NO_PRICE_VALUE INT_MIN
 
 typedef struct menu_item_
 {

@@ -27,9 +27,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
-// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
-// read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {
     if (fgets(string, size, stdin) == NULL)
@@ -52,7 +51,7 @@ bool read_string(char *string, const int size)
 }
 
 // Opens file 'file_name' and stores all of its items into menu_item struct array 'items'.
-// Returns false if the file could not be opened.
+// Returns false if file could not be opened.
 bool read_file_items(const char *file_name, const int max_item_amount, menu_item items[],
                      int *item_count)
 {

@@ -34,9 +34,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
-// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
-// read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {
     if (fgets(string, size, stdin) == NULL)
@@ -58,8 +57,8 @@ bool read_string(char *string, const int size)
     return true;
 }
 
-// Opens file 'file_name' and stores all of its lines as strings into a multidimensional array
-// 'lines'. Returns false if the file could not be opened.
+// Opens file 'file_name' and stores all of its lines into a multidimensional array
+// 'lines'. Returns false if file could not be opened.
 bool read_file_lines(const char *file_name, const int line_length, const int max_line_amount,
                      char lines[][line_length], int *line_count)
 {
@@ -93,8 +92,8 @@ void to_upper(const int line_length, char lines[][line_length], const int line_c
     }
 }
 
-// Opens file 'file_name' for writing, and replaces its contents with the lines in 'lines'.
-// Returns false if the file could not be opened.
+// Opens file 'file_name', and replaces its contents with the lines in 'lines'.
+// Returns false if file could not be opened.
 bool update_file(const char *file_name, const int line_length, char lines[][line_length],
                  const int line_count)
 {

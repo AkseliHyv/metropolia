@@ -29,9 +29,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
-// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
-// read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {
     if (fgets(string, size, stdin) == NULL)
@@ -53,8 +52,8 @@ bool read_string(char *string, const int size)
     return true;
 }
 
-// Reads integers from 'file' until reading fails or the file ends, then prints how many
-// were found along with the highest and smallest one.
+// Reads integers from 'file' until no more are found. Prints amount of integers
+// found, along with the highest and smallest integer found.
 void read_file(FILE *file, const char *file_name)
 {
     int numbers_found = 0;
@@ -75,14 +74,6 @@ void read_file(FILE *file, const char *file_name)
         numbers_found++;
     }
 
-    print_results(file_name, numbers_found, highest_number, smallest_number);
-}
-
-// Prints the highest and smallest number and the amount of numbers found in 'file_name',
-// or a notice if no numbers were found.
-void print_results(const char *file_name, const int numbers_found, const int highest_number,
-                   const int smallest_number)
-{
     printf("Results of file %s:\n", file_name);
     if (numbers_found == 0)
     {
@@ -90,7 +81,7 @@ void print_results(const char *file_name, const int numbers_found, const int hig
     }
     else
     {
-        printf("\nHighest number: %d\nSmallest number: %d\nNumbers in total: %d\n", highest_number,
-               smallest_number, numbers_found);
+        printf("\nHighest number: %d\nSmallest number: %d\nNumbers in total: %d\n", 
+            highest_number, smallest_number, numbers_found);
     }
 }

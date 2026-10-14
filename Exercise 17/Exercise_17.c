@@ -35,9 +35,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
-// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
-// read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {
     if (fgets(string, size, stdin) == NULL)

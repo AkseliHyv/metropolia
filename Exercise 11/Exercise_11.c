@@ -33,9 +33,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
-// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
-// read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {
     if (fgets(string, size, stdin) == NULL)
@@ -57,9 +56,8 @@ bool read_string(char *string, const int size)
     return true;
 }
 
-// Replaces every occurrence of the first character of 'replace_pair' in 'string' with its
-// second character. Returns the amount of characters replaced, or 0 if 'replace_pair'
-// is not exactly two characters long.
+// Replaces every occurence of the first character from 'replace_pair' in 'string' with
+// the second character in 'replace_pair'. Returns the amount of characters changed.
 int replace_char(char *string, const char *replace_pair)
 {
     if (strlen(replace_pair) != REPLACE_PAIR_LENGTH)

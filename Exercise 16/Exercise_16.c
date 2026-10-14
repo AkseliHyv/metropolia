@@ -37,9 +37,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
-// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
-// read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {
     if (fgets(string, size, stdin) == NULL)
@@ -85,8 +84,8 @@ bool get_integer(const char *string, int *number)
     return true;
 }
 
-// Creates a new node with 'number' and adds it to the end of the linked list using 'head' and
-// 'tail'. Returns false if memory could not be allocated for the node.
+// Creates a new node, assigns 'number' to it, and adds it to the end of the linked 
+// list using 'head' and 'tail'. Returns false if memory could not be allocated.
 bool make_node(nnode **head, nnode **tail, const int number)
 {
     nnode *new = malloc(sizeof(nnode));
@@ -110,7 +109,7 @@ bool make_node(nnode **head, nnode **tail, const int number)
     return true;
 }
 
-// Prints the numbers of all nodes in the linked list into stdout, starting from 'head'.
+// Prints the numbers of all nodes in the linked list into stdout.
 void print_nodes(nnode *head)
 {
     nnode *current = head;
@@ -121,7 +120,7 @@ void print_nodes(nnode *head)
     }
 }
 
-// Frees all nodes in the linked list starting from 'head', and sets 'head' to NULL.
+// Frees all nodes in the linked list.
 void free_nodes(nnode **head)
 {
     while (*head != NULL)

@@ -25,9 +25,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-// Asks the user for input into 'string', which can hold 'size' characters including the '\0'.
-// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
-// read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters. 
+// Removes newline and empties buffer. Returns false if reading failed.
 bool read_string(char *string, const int size)
 {
     printf("Enter a string (or type 'stop' to quit): ");

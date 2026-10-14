@@ -9,7 +9,7 @@ int main(void)
     int numbers[ARRAY_SIZE];
     for (int i = 0; i < ARRAY_SIZE; i++)
     {
-        numbers[i] = rand();
+        numbers[i] = rand() % RAND_ROOF;
     }
     print_numbers(numbers, ARRAY_SIZE);
     return 0;

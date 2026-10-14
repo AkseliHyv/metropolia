@@ -1,34 +1,89 @@
 #include "headers.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 int main(void)
 {
-    return 0;
+    srand(time(NULL));
+    char word[MAX_WORD_LENGTH] = "";
+    char password[MAX_PASSWORD_LENGTH];
+
+    while (strcmp(word, "stop"))
+    {
+        printf("Enter a word to encrypt into a password, or 'stop' to stop: ");
+        if (!read_string(word, MAX_WORD_LENGTH))
+        {
+            fprintf(stderr, "Could not read user input.\n");
+            return EXIT_FAILURE;
+        }
+
+        if (strcmp(word, "stop"))
+        {
+            if (!encrypt_word(password, MAX_PASSWORD_LENGTH, word))
+            {
+                fprintf(stderr, "Could not encrypt password.\n");
+            }
+            else
+            {
+                printf("Your encrypted password is: %s\n", password);
+            }
+        }
+    }
+
+    return EXIT_SUCCESS;
 }
 
-/*
-Write a password generator function that takes three parameters: character pointer, integer (size of
-the array), a const char pointer (a word) and returns a bool. The function generates password and
-stores it in the array and returns true. The length of the generated password is the
-length of word × 2 + 1 characters. If the password does not fit in the string function returns false
-and does not modify the string.
+// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
+// Removes newline, and clears extra characters from the buffer. Returns false if nothing could be
+// read.
+bool read_string(char *string, const int size)
+{
+    if (fgets(string, size, stdin) == NULL)
+    {
+        return false;
+    }
 
-The password must contain the word given as a parameter so that password starts with a random
-printable character and every other letter is a letter from the word and every other is a random
-printable character. The password ends with a random printable character. Note that printable
-characters are not limited to alphanumerical characters.
+    const size_t string_length = strlen(string);
+    if (string[string_length - 1] == '\n')
+    {
+        string[string_length - 1] = '\0';
+    }
+    else
+    {
+        while ((getchar()) != '\n')
+        {
+        }
+    }
+    return true;
+}
 
-Write a program that asks user to enter a word to place in the password or to enter “stop” to stop
-the program. The size of the string to read the word into must be 32. If user does not enter stop the
-program generates a password using the generator function. If a password is generated successfully
-the program prints it otherwise an error message is printed. Then the program asks for another
-word.
+// Encrypts 'word' into 'password' by adding a random character between each letter and to both
+// ends. Returns false if the password does not fit in 'max_pass_length'.
+bool encrypt_word(char *password, int max_pass_length, char *word)
+{
+    char encrypted_pass[max_pass_length];
 
-For example:
+    size_t c;
+    for (c = 0; c < strlen(word) * 2 + 1; c++)
+    {
+        if (c == max_pass_length - 1)
+        {
+            return false;
+        }
 
-User enters: metropolia
+        if (c % 2)
+        {
+            encrypted_pass[c] = word[c / 2];
+        }
+        else
+        {
+            encrypted_pass[c] = 33 + rand() % 94;
+        }
+    }
+    encrypted_pass[c] = '\0';
 
-Program prints: #m%eGtqrHo&p2o+lBimaY
-
-You don’t need to use colours. They are just a visual aid. The random characters will naturally be
-different on your program.
-*/
+    strcpy(password, encrypted_pass);
+    return true;
+}

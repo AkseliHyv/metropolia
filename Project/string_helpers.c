@@ -3,9 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
-// Reads input from stdin into 'string', which can hold 'size' characters including the '\0'.
-// Clears extra characters from the buffer and trims whitespace. Returns false if nothing could
-// be read.
+// Reads input from stdin into 'string', which holds 'size' amount of characters.
+// Removes newline and empties buffer. Returns false if reading failed.
 bool get_string(char *string, const int size)
 {
     if (fgets(string, size, stdin))
@@ -17,8 +16,7 @@ bool get_string(char *string, const int size)
     return false;
 }
 
-// Clears the rest of the line from stdin if 'string' did not fit the whole line, meaning it
-// does not end with a newline.
+// Clears the rest of the line from stdin if 'string' did not fit the whole line.
 void clear_buffer(char *string)
 {
     size_t length = strlen(string);
@@ -30,7 +28,7 @@ void clear_buffer(char *string)
     }
 }
 
-// Removes all whitespace, including the newline, from the beginning and end of 'string'.
+// Removes all whitespace from beginning and end of 'string'.
 void trim_whitespace(char *string)
 {
     size_t length = strlen(string);
@@ -49,7 +47,7 @@ void trim_whitespace(char *string)
     }
 }
 
-// Reads 'string' for any occurrences of 'character'. Returns true if found, false if not.
+// Checks 'string' for any occurrences of 'character'.
 bool char_in_string(const char *string, char character)
 {
     for (int c = 0; string[c] != '\0'; c++)

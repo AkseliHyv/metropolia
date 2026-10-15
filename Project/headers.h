@@ -13,30 +13,56 @@
 #define MAX_OPTION_SIZE 8
 #define MAX_GAME_NAME_SIZE (50 + EXTRA_BUFFER)
 #define MAX_GENRE_NAME_SIZE (15 + EXTRA_BUFFER)
-#define MAX_GENRE_AMOUNT 10
+#define MAX_LINE_LENGTH 128
+#define METADATA_FILE "metadata.txt"
+
+typedef enum game_genre
+{
+    GENRE_ACTION = 1 << 0,
+    GENRE_ADVENTURE = 1 << 1,
+    GENRE_RPG = 1 << 2,
+    GENRE_STRATEGY = 1 << 3,
+    GENRE_SIMULATION = 1 << 4,
+    GENRE_PUZZLE = 1 << 5,
+    GENRE_PLATFORMER = 1 << 6,
+    GENRE_SHOOTER = 1 << 7,
+    GENRE_RACING = 1 << 8,
+    GENRE_SPORTS = 1 << 9,
+    GENRE_HORROR = 1 << 10,
+    GENRE_SURVIVAL = 1 << 11,
+    GENRE_SANDBOX = 1 << 12,
+    GENRE_ROGUELIKE = 1 << 13,
+    GENRE_FIGHTING = 1 << 14,
+    GENRE_MULTIPLAYER = 1 << 15
+} genre;
+
+#define GENRE_AMOUNT 16
 
 typedef struct game_metadata
 {
     char name[MAX_GAME_NAME_SIZE];
-    char genres[MAX_GENRE_AMOUNT][MAX_GENRE_NAME_SIZE];
-    int genre_amount;
+    unsigned int genres;
     double playtime;
 } game;
 
+// menu_functions.c
 void print_splash(void);
 void print_menu(void);
 void handle_menu_selection(const char *user_selection);
 
-void search_game(void);
-
+// game_functions.c
 void add_game(void);
 bool set_name(game *game);
-bool is_valid_game_name(const char *game_name);
 bool set_genres(game *game);
-bool is_valid_genre_name(const char *genre_name);
+void search_game(void);
 game *find_games(char *game_name, int *games_found);
-void display_games(game *game, int games_found);
+void display_games(game *games, int games_found);
+bool is_valid_game_name(const char *game_name);
+unsigned int get_genre_bitwise(const char *genre_name);
+bool get_game_from_line(char *line, char *game_name, unsigned int *genres, double *playtime,
+                        const int line_index);
 
+// string_helpers.c
 bool get_string(char *string, const int size);
 void clear_buffer(char *string);
 void trim_whitespace(char *string);

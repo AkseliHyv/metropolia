@@ -1,32 +1,94 @@
 #include "headers.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main(void)
 {
-    return 0;
+    char file_name[MAX_FILE_NAME_SIZE];
+
+    printf("Enter a file to search for: ");
+    if (!read_string(file_name, MAX_FILE_NAME_SIZE))
+    {
+        fprintf(stderr, "Could not read a file name\n");
+        return EXIT_FAILURE;
+    }
+
+    if (!check_file(file_name, MAX_LINE_LENGTH))
+    {
+        fprintf(stderr, "Could not open file %s\n", file_name);
+        return EXIT_FAILURE;
+    }
+
+    return EXIT_SUCCESS;
 }
 
-/*
-Write a program that asks user to enter a file name. Program opens the file in text mode. The file is
-supposed to contain NMEA (GPS) data. Program looks for lines that start with ‘$’ and have an
-asterisk ‘*’ later on the line. If a line meeting the condition is found the program verifies the
-checksum of the line. If checksum is ok line is printed prefixed with [ OK ] otherwise line is
-prefixed with [FAIL].
+// Reads input from stdin into 'string', which holds 'size' amount of characters.
+// Removes newline and empties buffer. Returns false if reading failed.
+bool read_string(char *string, const int size)
+{
+    if (fgets(string, size, stdin) == NULL)
+    {
+        return false;
+    }
 
-Checksum is calculated by XORing all characters after ‘$’ and before ‘*’. The result is checked against
-the two-digit hexadecimal value that follows ‘*’. If they are equal line is ok.
+    const size_t string_length = strlen(string);
+    if (string[string_length - 1] == '\n')
+    {
+        string[string_length - 1] = '\0';
+    }
+    else
+    {
+        while ((getchar()) != '\n')
+        {
+        }
+    }
+    return true;
+}
 
-For example:
-$GPGGA,092750.000,5321.6802,N,00630.3372,W,1,8,1.03,61.7,M,55.2,M,,*76
-$GPGSA,A,3,10,07,05,02,29,04,08,13,,NOT,OK,,1.72,1.03,1.38*0A
-$GPGSV,3,1,11,10,63,137,17,07,61,098,15,05,59,290,20,08,54,157,30*70
-$GPGSV,3,2,11,02,39,223,19,13,28,070,17,26,23,252,,04,14,186,14*79
-$GPGSV,3,3,11,29,09,301,24,16,09,020,,36,,,*76
-$GPRMC,092750.000,A,5321.6802,N,00630.3372,W,0.02,31.66,280511,,,A*43
-$GPGGA,092751.000,5321.6802,N,00630.3371,W,1,8,1.03,61.7,M,55.3,M,,*75
-$GPGSA,A,3,10,07,05,02,29,04,08,13,BAD,,,,1.72,1.03,1.38*0A
-$GPGSV,3,1,11,10,63,137,17,07,61,098,15,05,59,290,20,08,54,157,30*70
-$GPGSV,3,2,11,02,39,223,16,13,28,070,17,26,23,252,,04,14,186,15*77
-$GPGSV,3,3,11,29,09,301,24,16,09,020,BROKEN,36,,,*76
-$GPRMC,092751.000,A,5321.6802,N,00630.3371,W,0.06,31.66,280511,,,A*45
-Above the lines that read “NOT,OK”, “BAD” and “BROKEN” have a failing checksum.
-*/
+// Checks file 'file_name' line by line, returning [OK] if checksum is fine, else [FAIL]. Skips
+// invalid lines.
+bool check_file(const char *file_name, const int line_length)
+{
+    char line[line_length];
+
+    FILE *file = fopen(file_name, "r");
+    if (file == NULL)
+    {
+        return false;
+    }
+
+    while (fgets(line, line_length, file) != NULL)
+    {
+        char data[line_length];
+        unsigned int checksum;
+
+        if (sscanf(line, "$%255[^*]*%x", data, &checksum) == 2)
+        {
+            if (calculate_checksum(data) == checksum)
+            {
+                fprintf(stdout, "[ OK ] ");
+            }
+            else
+            {
+                fprintf(stdout, "[FAIL] ");
+            }
+
+            fprintf(stdout, "%s", line);
+        }
+    }
+
+    fclose(file);
+    return true;
+}
+
+// Calculates checksum by XORing all characters in 'data'.
+unsigned int calculate_checksum(const char *data)
+{
+    unsigned int final_hex = 0;
+    for (int c = 0; data[c] != '\0'; c++)
+    {
+        final_hex = final_hex ^ data[c];
+    }
+    return final_hex;
+}

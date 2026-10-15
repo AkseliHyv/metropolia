@@ -2,17 +2,26 @@
 #include <stdio.h>
 #include <string.h>
 
-// Prints the splash screen into stdout when the launcher starts.
-void print_splash(void) {}
+// Prints the launcher's splash screen. It looks hideous thanks to clang-format.
+void print_splash(void)
+{
+    const char *splash_ascii =
+        "    _    _  ______  _____ _        _   _   _ _   _  ____ _   _ _____ ____  \n   / \\  | "
+        "|/ / ___|| ____| |      / \\ | | | | \\ | |/ ___| | | | ____|  _ \\ \n  / _ \\ | ' /\\___ "
+        "\\|  _| | |     / _ \\| | | |  \\| | |   | |_| |  _| | |_) |\n / ___ \\| . \\ ___) | "
+        "|___| |___ / ___ \\ |_| | |\\  | |___|  _  | |___|  _ < \n/_/   "
+        "\\_\\_|\\_\\____/|_____|_____/_/   \\_\\___/|_| \\_|\\____|_| |_|_____|_| \\_\\ ";
+    printf("%s\n\n", splash_ascii);
+}
 
-// Prints the available menu options and what each of them does into stdout.
+// Prints the menu into stdout.
 void print_menu(void)
 {
     printf("'%s': Search for existing games\n'%s': Add a new game\n'%s': Quit the launcher\n",
            SEARCH_OPTION, ADD_OPTION, QUIT_OPTION);
 }
 
-// Runs the action matching 'user_selection'. Prints an error if it is not a valid option.
+// Handles the user's menu selection 'user_selection'.
 void handle_menu_selection(const char *user_selection)
 {
     if (strcmp(user_selection, SEARCH_OPTION) == 0)

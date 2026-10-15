@@ -110,6 +110,19 @@ bool set_genres(game *game)
     return true;
 }
 
+// Gets the bit associated with the genre, or 0 if not associated with any genre.
+unsigned int get_genre_bitwise(const char *genre_name)
+{
+    for (int i = 0; i < GENRE_AMOUNT; i++)
+    {
+        if (!strcmp(GENRES[i], genre_name))
+        {
+            return 1 << i;
+        }
+    }
+    return 0;
+}
+
 // Searches for game by name, or 'all' for every game. Displays found games into stdout.
 void search_game(void)
 {
@@ -190,6 +203,16 @@ game *find_games(char *game_name, int *games_found)
     return games;
 }
 
+// Empties the rest of the line in 'file'.
+void skip_line(FILE *file)
+{
+    int c = 'a';
+    while (c != '\n' && c != EOF)
+    {
+        c = fgetc(file);
+    }
+}
+
 // Returns true if 'line' contains proper game data and matches the search query. Stores line data
 // into 'game_'.
 bool valid_search_result(const char *line, const char *game_name, game *game_, const int line_index)
@@ -206,6 +229,44 @@ bool valid_search_result(const char *line, const char *game_name, game *game_, c
     {
         return false;
     }
+    return true;
+}
+
+// Sets the values in 'line' into 'game_name', 'genres', and 'playtime'. Returns false if line is
+// incorrectly formatted.
+bool get_game_from_line(const char *line, game *game_, const int line_index)
+{
+    char extra = '\0';
+    if (sscanf(line, "%51[^;];%u;%lf %c", game_->name, &game_->genres, &game_->playtime, &extra) <
+        3)
+    {
+        if (strlen(game_->name) > MAX_GAME_NAME_SIZE - EXTRA_BUFFER)
+        {
+            fprintf(stderr, "Line %d: Bad name\n", line_index);
+        }
+        else
+        {
+            fprintf(stderr, "Line %d: Missing fields\n", line_index);
+        }
+        return false;
+    }
+    else if (extra != '\0')
+    {
+        fprintf(stderr, "Line %d: Too many fields\n", line_index);
+        return false;
+    }
+
+    if (game_->genres >= 1u << GENRE_AMOUNT)
+    {
+        fprintf(stderr, "Line %d: Bad genres\n", line_index);
+        return false;
+    }
+    else if (game_->playtime < 0)
+    {
+        fprintf(stderr, "Line %d: Bad playtime\n", line_index);
+        return false;
+    }
+
     return true;
 }
 
@@ -236,16 +297,6 @@ bool store_game(game **games, int *games_found, game *game_)
 
     (*games_found)++;
     return true;
-}
-
-// Empties the rest of the line in 'file'.
-void skip_line(FILE *file)
-{
-    int c = 'a';
-    while (c != '\n' && c != EOF)
-    {
-        c = fgetc(file);
-    }
 }
 
 // Displays games in 'games' array.
@@ -301,56 +352,5 @@ bool is_valid_game_name(const char *game_name)
         fprintf(stderr, "Game name cannot contain the character ';'.\n");
         return false;
     }
-    return true;
-}
-
-// Gets the bit associated with the genre, or 0 if not associated with any genre.
-unsigned int get_genre_bitwise(const char *genre_name)
-{
-    for (int i = 0; i < GENRE_AMOUNT; i++)
-    {
-        if (!strcmp(GENRES[i], genre_name))
-        {
-            return 1 << i;
-        }
-    }
-    return 0;
-}
-
-// Sets the values in 'line' into 'game_name', 'genres', and 'playtime'. Returns false if line is
-// incorrectly formatted.
-bool get_game_from_line(const char *line, game *game_, const int line_index)
-{
-    char extra = '\0';
-    if (sscanf(line, "%51[^;];%u;%lf %c", game_->name, &game_->genres, &game_->playtime, &extra) <
-        3)
-    {
-        if (strlen(game_->name) > MAX_GAME_NAME_SIZE - EXTRA_BUFFER)
-        {
-            fprintf(stderr, "Line %d: Bad name\n", line_index);
-        }
-        else
-        {
-            fprintf(stderr, "Line %d: Missing fields\n", line_index);
-        }
-        return false;
-    }
-    else if (extra != '\0')
-    {
-        fprintf(stderr, "Line %d: Too many fields\n", line_index);
-        return false;
-    }
-
-    if (game_->genres >= 1u << GENRE_AMOUNT)
-    {
-        fprintf(stderr, "Line %d: Bad genres\n", line_index);
-        return false;
-    }
-    else if (game_->playtime < 0)
-    {
-        fprintf(stderr, "Line %d: Bad playtime\n", line_index);
-        return false;
-    }
-
     return true;
 }

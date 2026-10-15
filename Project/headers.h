@@ -1,7 +1,7 @@
 #ifndef HEADERS_H
 #define HEADERS_H
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #define SEARCH_OPTION "search"
 #define CANCEL_OPTION "cancel"
@@ -58,16 +58,14 @@ bool set_genres(game *game);
 
 void search_game(void);
 game *find_games(char *game_name, int *games_found);
-bool valid_search_result(const char *line, const char *game_name, char *current_game_name,
-                unsigned int *genres, double *playtime, const int line_index);
-bool store_game(game **games, int *games_found, char *game_name, unsigned int genres,
-                double playtime);
+bool valid_search_result(const char *line, const char *game_name, game *game_,
+                         const int line_index);
+bool store_game(game **games, int *games_found, game *game_);
 void skip_line(FILE *file);
 void display_games(game *games, int games_found);
 bool is_valid_game_name(const char *game_name);
 unsigned int get_genre_bitwise(const char *genre_name);
-bool get_game_from_line(const char *line, char *game_name, unsigned int *genres,
-                        double *playtime, const int line_index);
+bool get_game_from_line(const char *line, game *game_, const int line_index);
 
 // string_helpers.c
 bool get_string(char *string, const int size);

@@ -1,5 +1,4 @@
 #include "headers.h"
-#include <stdio.h>
 #include <string.h>
 
 // Prints the launcher's splash screen. It looks hideous thanks to clang-format.
@@ -34,6 +33,6 @@ void handle_menu_selection(const char *user_selection)
     }
     else
     {
-        printf("Invalid option.\n");
+        fprintf(stderr, "Invalid option.\n");
     }
 }

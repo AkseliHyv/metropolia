@@ -1,6 +1,5 @@
 #include "headers.h"
 #include <ctype.h>
-#include <stdio.h>
 #include <string.h>
 
 // Reads input from stdin into 'string', which holds 'size' amount of characters.

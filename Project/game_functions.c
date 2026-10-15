@@ -1,6 +1,4 @@
 #include "headers.h"
-#include <ctype.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -87,8 +85,8 @@ bool set_genres(game *game)
             }
         }
 
-        printf("Enter a genre one at a time (lowercase), '%s' to end, or '%s' to cancel: ", END_OPTION,
-               CANCEL_OPTION);
+        printf("Enter a genre one at a time (lowercase), '%s' to end, or '%s' to cancel: ",
+               END_OPTION, CANCEL_OPTION);
         if (!get_string(genre_name, MAX_GENRE_NAME_SIZE) || !strcmp(genre_name, CANCEL_OPTION))
         {
             return false;
@@ -153,10 +151,8 @@ void search_game(void)
 // were found.
 game *find_games(char *game_name, int *games_found)
 {
-    const size_t game_size = sizeof(game);
     char line[MAX_LINE_LENGTH];
     game *games = NULL;
-    game *tmp = NULL;
 
     FILE *metadata_file = fopen(METADATA_FILE, "r");
 
@@ -171,45 +167,22 @@ game *find_games(char *game_name, int *games_found)
     {
         if (line[strlen(line) - 1] != '\n')
         {
-            printf("Line %d: Line is too long\n", index);
-
-            int c = 'a';
-            while (c != '\n' && c != EOF)
-            {
-                c = fgetc(metadata_file);
-            }
+            fprintf(stderr, "Line %d: Line is too long\n", index);
+            skip_line(metadata_file);
         }
         else
         {
             char current_game_name[MAX_GAME_NAME_SIZE] = "";
             unsigned int genres;
             double playtime = 0.0;
-            if (strspn(line, " \t\r\n") != strlen(line) &&
-                get_game_from_line(line, current_game_name, &genres, &playtime, index) &&
-                (!strcmp(current_game_name, game_name) || !strcmp(game_name, ALL_OPTION)))
-            {
-                if (*games_found == 0)
-                {
-                    tmp = malloc(game_size);
-                }
-                else
-                {
-                    tmp = realloc(games, game_size * (*games_found + 1));
-                }
 
-                if (tmp == NULL)
+            if (valid_search_result(line, game_name, current_game_name, &genres, &playtime, index))
+            {
+                if (!store_game(&games, games_found, current_game_name, genres, playtime))
                 {
-                    fprintf(stderr, "Not enough memory to allocate to games.\n");
                     fclose(metadata_file);
                     return games;
                 }
-                games = tmp;
-
-                strcpy(games[*games_found].name, current_game_name);
-                games[*games_found].genres = genres;
-                games[*games_found].playtime = playtime;
-
-                (*games_found)++;
             }
         }
         index++;
@@ -217,6 +190,65 @@ game *find_games(char *game_name, int *games_found)
 
     fclose(metadata_file);
     return games;
+}
+
+// Returns true if 'line' contains proper game data and matches the search query. Stores line data
+// into 'current_game_name', 'genres' and 'playtime'.
+bool valid_search_result(const char *line, const char *game_name, char *current_game_name,
+                         unsigned int *genres, double *playtime, const int line_index)
+{
+    if (strspn(line, " \t\r\n") == strlen(line))
+    {
+        return false;
+    }
+    if (!get_game_from_line(line, current_game_name, genres, playtime, line_index))
+    {
+        return false;
+    }
+    if (strcmp(current_game_name, game_name) && strcmp(game_name, ALL_OPTION))
+    {
+        return false;
+    }
+    return true;
+}
+
+bool store_game(game **games, int *games_found, char *game_name, unsigned int genres,
+                double playtime)
+{
+    game *tmp = NULL;
+    const size_t game_size = sizeof(game);
+
+    if (*games_found == 0)
+    {
+        tmp = malloc(game_size);
+    }
+    else
+    {
+        tmp = realloc(*games, game_size * (*games_found + 1));
+    }
+
+    if (tmp == NULL)
+    {
+        fprintf(stderr, "Not enough memory to allocate to games.\n");
+        return false;
+    }
+    *games = tmp;
+
+    strcpy((*games)[*games_found].name, game_name);
+    (*games)[*games_found].genres = genres;
+    (*games)[*games_found].playtime = playtime;
+
+    (*games_found)++;
+    return true;
+}
+
+void skip_line(FILE *file)
+{
+    int c = 'a';
+    while (c != '\n' && c != EOF)
+    {
+        c = fgetc(file);
+    }
 }
 
 // Displays games in 'games' array.
@@ -230,15 +262,21 @@ void display_games(game *games, int games_found)
         printf("Genres: ");
         if (game.genres == 0)
         {
-            printf("none,");
+            printf("none");
         }
         else
         {
+            bool first = true;
             for (int ge = 0; ge < GENRE_AMOUNT; ge++)
             {
                 if (game.genres & (1u << ge))
                 {
-                    printf("%s, ", GENRES[ge]);
+                    if (!first)
+                    {
+                        printf(", ");
+                    }
+                    printf("%s", GENRES[ge]);
+                    first = false;
                 }
             }
         }
@@ -252,17 +290,18 @@ bool is_valid_game_name(const char *game_name)
 {
     if (strlen(game_name) == 0)
     {
-        printf("Game name cannot be empty.\n");
+        fprintf(stderr, "Game name cannot be empty.\n");
         return false;
     }
     if (strlen(game_name) > MAX_GAME_NAME_SIZE - EXTRA_BUFFER)
     {
-        printf("Game name cannot be over %d characters.\n", MAX_GAME_NAME_SIZE - EXTRA_BUFFER);
+        fprintf(stderr, "Game name cannot be over %d characters.\n",
+                MAX_GAME_NAME_SIZE - EXTRA_BUFFER);
         return false;
     }
     if (char_in_string(game_name, ';'))
     {
-        printf("Game name cannot contain the character ';'.\n");
+        fprintf(stderr, "Game name cannot contain the character ';'.\n");
         return false;
     }
     return true;
@@ -283,7 +322,7 @@ unsigned int get_genre_bitwise(const char *genre_name)
 
 // Sets the values in 'line' into 'game_name', 'genres', and 'playtime'. Returns false if line is
 // incorrectly formatted.
-bool get_game_from_line(char *line, char *game_name, unsigned int *genres, double *playtime,
+bool get_game_from_line(const char *line, char *game_name, unsigned int *genres, double *playtime,
                         const int line_index)
 {
     char extra = '\0';
@@ -291,27 +330,28 @@ bool get_game_from_line(char *line, char *game_name, unsigned int *genres, doubl
     {
         if (strlen(game_name) > MAX_GAME_NAME_SIZE - EXTRA_BUFFER)
         {
-            printf("Line %d: Bad name\n", line_index);
+            fprintf(stderr, "Line %d: Bad name\n", line_index);
         }
-        else {
-            printf("Line %d: Missing fields\n", line_index);
+        else
+        {
+            fprintf(stderr, "Line %d: Missing fields\n", line_index);
         }
         return false;
     }
     else if (extra != '\0')
     {
-        printf("Line %d: Too many fields\n", line_index);
+        fprintf(stderr, "Line %d: Too many fields\n", line_index);
         return false;
     }
 
     if (*genres >= 1u << GENRE_AMOUNT)
     {
-        printf("Line %d: Bad genres\n", line_index);
+        fprintf(stderr, "Line %d: Bad genres\n", line_index);
         return false;
     }
     else if (*playtime < 0)
     {
-        printf("Line %d: Bad playtime\n", line_index);
+        fprintf(stderr, "Line %d: Bad playtime\n", line_index);
         return false;
     }
 

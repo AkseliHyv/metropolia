@@ -1,4 +1,5 @@
-#include "headers.h"
+#include "menu_functions.h"
+#include "game_functions.h"
 #include <string.h>
 
 // Prints the launcher's splash screen. It looks hideous thanks to clang-format.

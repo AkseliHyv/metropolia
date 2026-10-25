@@ -128,7 +128,7 @@ void print_items(const menu_item items[], const int item_count)
 }
 
 // Returns 1 if item 'a' is more expensive than 'b', -1 if 'b' is more expensive than 'a', 0 if they
-// are the same price. Also returns 1 if 'a' has no specified price.
+// are the same price.
 int cmp_price(const void *a, const void *b)
 {
     menu_item ca = *(const menu_item *)a;

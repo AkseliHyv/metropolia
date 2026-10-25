@@ -317,7 +317,7 @@ void display_games(game *games, int games_found)
             bool first = true;
             for (int ge = 0; ge < GENRE_AMOUNT; ge++)
             {
-                if (game.genres & (1u << ge))
+                if (game.genres & (1 << ge))
                 {
                     if (!first)
                     {

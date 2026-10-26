@@ -11,6 +11,7 @@
 #define LED_2_GPIO 21
 #define LED_3_GPIO 22
 
+void set_led_levels(const int *leds, int level);
 void init_pwm(int pin);
 void init_button(int pin);
 bool is_down(int pin);

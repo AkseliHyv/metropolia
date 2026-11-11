@@ -1,140 +1,159 @@
 #include "headers.h"
-#include "hardware/clocks.h"
-#include "hardware/pwm.h"
-#include "hardware/irq.h"
 #include "pico/stdlib.h"
 #include "pico/util/queue.h"
-#include <stdio.h>
 #include <stdint.h>
-#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+static const int motor_pins[4] = {MOT_A, MOT_B, MOT_C, MOT_D};
+
+static const uint8_t motor_steps[8][4] = {
+    {1, 0, 0, 0}, {1, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 1, 0},
+    {0, 0, 1, 0}, {0, 0, 1, 1}, {0, 0, 0, 1}, {1, 0, 0, 1},
+};
+static int current_step = 0;
+static float leftover_steps = 0;
 static queue_t fifo;
-static button rotary_button = {.pin = ROT_SW, .last_time = 0, .last_value = 0};
+static uint32_t last_opto_time = 0;
 
 int main()
 {
-    int event;
-    const int leds[3] = {LED_1_GPIO, LED_2_GPIO, LED_3_GPIO};
-    bool leds_on = false;
-    int level = 500;
-
-    init_gpio();
-    init_pwm(leds);
-
-    queue_init(&fifo, sizeof(int), FIFO_LENGTH);
-    gpio_set_irq_enabled_with_callback(ROT_SW, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, irq);
-    gpio_set_irq_enabled(ROT_A, GPIO_IRQ_EDGE_RISE, true);
-    
+    char str[STR_MAX_SIZE] = "";
+    float calib_steps = -1;
+    init();
 
     while (1)
     {
-        if (queue_try_remove(&fifo, &event)) {
-            int target_level = 0;
-            if (event == ROTARY_DOWN_EVENT)
-            {
-                printf("Rotary switch event");
-                if (!leds_on)
-                {
-                    target_level = level;
-                }
-                else if (level == 0)
-                {
-                    level = 500;
-                    target_level = level;
-                    leds_on = !leds_on; // Reverse the change that happens at the end of the conditional
-                }
-                leds_on = !leds_on;
-            }
-            else if (event == ROTARY_RIGHT_EVENT && leds_on)
-            {
-                level -= STEP_SIZE;
-                if (level < 0) level = 0;
-                target_level = level;
-            }
-            else if (leds_on)
-            {
-                level += STEP_SIZE;
-                if (level > 1000) level = 1000;
-                target_level = level;
-            }
-            set_led_levels(leds, target_level);
+        char command[STR_MAX_SIZE] = "";
+        int n = 8;
+
+        printf(
+            "\nchoose option\n'status': show calibration state and steps per revolution\n'calib': "
+            "measure steps per revolution\n'run N': run N/8 of a revolution, default 8\n");
+        if (!fgets(str, STR_MAX_SIZE, stdin))
+        {
+            return EXIT_FAILURE;
         }
+
+        sscanf(str, "%s %d", command, &n);
+
+        if (!strcmp(command, "calib"))
+        {
+            calib_steps = calibrate();
+        }
+        else if (!strcmp(command, "status"))
+        {
+            status(calib_steps);
+        }
+        else if (calib_steps < 0)
+        {
+            printf("not calibrated, run 'calib' first\n");
+        }
+        else if (!strcmp(command, "run"))
+        {
+            rotate_n(n, calib_steps);
+        }
+        else
+        {
+            printf("unknown command\n");
+        }
+    }
+}
+
+void status(float calib_steps)
+{
+    if (calib_steps < 0)
+    {
+        printf("not calibrated, steps per revolution: not available\n");
+    }
+    else
+    {
+        printf("calibrated, steps per revolution: %.2f\n", calib_steps);
+    }
+}
+
+float calibrate()
+{
+    float steps = 0;
+    int event;
+    leftover_steps = 0;
+
+    clear_fifo();
+
+    for (int i = 0; i <= CALIB_ROTATIONS; i++)
+    {
+        while (!queue_try_remove(&fifo, &event))
+        {
+            if (i > 0)
+            {
+                steps++;
+            }
+            rotate_step();
+        }
+    }
+
+    steps = steps / CALIB_ROTATIONS;
+    return steps;
+}
+
+void rotate_n(const int n, const float calib_steps)
+{
+    const float steps = n * calib_steps / 8 + leftover_steps;
+
+    for (int i = 0; i < (int)steps; i++)
+    {
+        rotate_step();
+    }
+    leftover_steps = steps - (int)steps;
+}
+
+void rotate_step()
+{
+    current_step = (current_step + 1) % 8;
+    for (int i = 0; i < 4; i++)
+    {
+        gpio_put(motor_pins[i], motor_steps[current_step][i]);
+    }
+    sleep_ms(2);
+}
+
+void clear_fifo()
+{
+    int event;
+    while (queue_try_remove(&fifo, &event))
+    {
     }
 }
 
 void irq(const uint gpio, const uint32_t event_mask)
 {
-    if (gpio == ROT_SW)
+    if (gpio == OPTO_FORK)
     {
-        handle_sw(event_mask);
-    }
-    else if (gpio == ROT_A)
-    {
-        handle_rot();
-    }
-}
-
-void handle_sw(const uint32_t mask)
-{
-    const uint32_t current_time = time_us_32();
-    if (current_time - rotary_button.last_time >= DEBOUNCE_TIMER)
-    {
-        rotary_button.last_time = current_time;
-
-        if (mask == GPIO_IRQ_EDGE_FALL)
+        const uint32_t current_time = time_us_32();
+        if (current_time - last_opto_time >= DEBOUNCE_TIMER)
         {
-            const int event = ROTARY_DOWN_EVENT;
+            last_opto_time = current_time;
+            const int event = OPTO_FALL_EVENT;
             queue_try_add(&fifo, &event);
         }
     }
 }
 
-void handle_rot()
+void init()
 {
-    if (gpio_get(ROT_B) == 1)
+    stdio_init_all();
+
+    for (int pin = 0; pin < 4; pin++)
     {
-        const int event = ROTARY_RIGHT_EVENT;
-        queue_try_add(&fifo, &event);
+        gpio_init(motor_pins[pin]);
+        gpio_set_dir(motor_pins[pin], GPIO_OUT);
     }
-    else
-    {
-        const int event = ROTARY_LEFT_EVENT;
-        queue_try_add(&fifo, &event);
-    }
-}
 
-void init_gpio()
-{
-    gpio_init(ROT_SW);
-    gpio_init(ROT_A);
-    gpio_init(ROT_B);
+    gpio_init(OPTO_FORK);
+    gpio_set_dir(OPTO_FORK, GPIO_IN);
+    gpio_pull_up(OPTO_FORK);
 
-    gpio_set_dir(ROT_SW, GPIO_IN);
-    gpio_set_dir(ROT_A, GPIO_IN);
-    gpio_set_dir(ROT_B, GPIO_IN);
-
-    gpio_pull_up(ROT_SW);
-}
-
-void set_led_levels(const int *leds, const int level)
-{
-    for (int i = 0; i < 3; i++)
-    {
-        pwm_set_gpio_level(leds[i], level);
-    }
-}
-
-void init_pwm(const int *leds)
-{
-    for (int i = 0; i < 3; i++)
-    {
-        const uint slice = pwm_gpio_to_slice_num(leds[i]);
-        const uint channel = pwm_gpio_to_channel(leds[i]);
-
-        pwm_set_clkdiv(slice, (float)clock_get_hz(clk_sys) / 1000000);
-        pwm_set_wrap(slice, 999);
-        pwm_set_chan_level(slice, channel, 0);
-        pwm_set_enabled(slice, true);
-        gpio_set_function(leds[i], GPIO_FUNC_PWM);
-    }
+    queue_init(&fifo, sizeof(int), FIFO_LENGTH);
+    gpio_set_irq_enabled_with_callback(OPTO_FORK, GPIO_IRQ_EDGE_FALL, true, irq);
 }

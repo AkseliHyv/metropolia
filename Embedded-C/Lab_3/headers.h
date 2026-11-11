@@ -6,34 +6,26 @@
 
 typedef enum
 {
-    ROTARY_DOWN_EVENT,
-    ROTARY_LEFT_EVENT,
-    ROTARY_RIGHT_EVENT
+    OPTO_FALL_EVENT
 } events;
 
-typedef struct
-{
-    int pin;
-    int64_t last_time;
-    int last_value;
-} button;
-
-#define ROT_A 10
-#define ROT_B 11
-#define ROT_SW 12
-#define LED_1_GPIO 20
-#define LED_2_GPIO 21
-#define LED_3_GPIO 22
+#define OPTO_FORK 28
+#define MOT_A 2
+#define MOT_B 3
+#define MOT_C 6
+#define MOT_D 13
+#define STR_MAX_SIZE 10
 #define FIFO_LENGTH 32
 #define DEBOUNCE_TIMER 50000
-#define STEP_SIZE 50
+
+#define CALIB_ROTATIONS 3
 
 void irq(uint gpio, uint32_t event_mask);
-void handle_sw(uint32_t mask);
-void handle_rot(void);
-void init_button(int pin, bool button);
-void init_gpio(void);
-void init_pwm(const int *leds);
-void set_led_levels(const int *leds, const int level);
+void clear_fifo(void);
+void status(float calib_steps);
+float calibrate(void);
+void rotate_n(int n, float calib_steps);
+void rotate_step(void);
+void init(void);
 
 #endif // HEADERS_H_

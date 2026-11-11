@@ -9,6 +9,7 @@ pico_sdk_init()
 add_executable(Lab_2
         headers.h
         main.c
+        main.c
 )
 
 target_link_libraries(Lab_2

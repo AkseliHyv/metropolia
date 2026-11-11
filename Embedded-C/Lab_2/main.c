@@ -8,57 +8,65 @@
 #include <stdint.h>
 #include <sys/types.h>
 
-static queue_t fifo;
+static const int leds[3] = {LED_1_GPIO, LED_2_GPIO, LED_3_GPIO};
 static button rotary_button = {.pin = ROT_SW, .last_time = 0, .last_value = 0};
+static queue_t fifo;
 
-int main(void)
+int main()
 {
-    init_gpio();
-    init_pwm();
-    
-    const int leds[3] = {LED_1_GPIO, LED_2_GPIO, LED_3_GPIO};
+    int event;
     bool leds_on = false;
     int level = 500;
 
+    init_gpio();
+    init_pwm();
+
     queue_init(&fifo, sizeof(int), FIFO_LENGTH);
-    gpio_set_irq_enabled_with_callback(ROT_SW, GPIO_IRQ_EDGE_FALL, true, irq);
+    gpio_set_irq_enabled_with_callback(ROT_SW, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, irq);
     gpio_set_irq_enabled(ROT_A, GPIO_IRQ_EDGE_RISE, true);
     
 
     while (1)
     {
-        int event;
-        int target_level = 0;
         if (queue_try_remove(&fifo, &event)) {
+            int target_level = 0;
             if (event == ROTARY_DOWN_EVENT)
             {
+                printf("Rotary switch event");
                 if (!leds_on)
                 {
                     target_level = level;
                 }
+                else if (level == 0)
+                {
+                    level = 500;
+                    target_level = level;
+                    leds_on = !leds_on; // Reverse the change that happens at the end of the conditional
+                }
                 leds_on = !leds_on;
             }
-            else if (event == ROTARY_LEFT_EVENT)
+            else if (event == ROTARY_RIGHT_EVENT && leds_on)
             {
-                level--;
+                level -= STEP_SIZE;
+                if (level < 0) level = 0;
                 target_level = level;
             }
-            else
+            else if (leds_on)
             {
-                level++;
+                level += STEP_SIZE;
+                if (level > 1000) level = 1000;
                 target_level = level;
             }
+            set_led_levels(target_level);
         }
-
-        set_led_levels(leds, target_level);
     }
 }
 
-void irq(uint gpio, uint32_t event_mask)
+void irq(const uint gpio, const uint32_t event_mask)
 {
     if (gpio == ROT_SW)
     {
-        handle_sw();
+        handle_sw(event_mask);
     }
     else if (gpio == ROT_A)
     {
@@ -66,46 +74,33 @@ void irq(uint gpio, uint32_t event_mask)
     }
 }
 
-void handle_sw(void)
+void handle_sw(const uint32_t mask)
 {
     const uint32_t current_time = time_us_32();
     if (current_time - rotary_button.last_time >= DEBOUNCE_TIMER)
     {
         rotary_button.last_time = current_time;
 
-        int event = ROTARY_DOWN_EVENT;
-        queue_try_add(&fifo, &event);
+        if (mask == GPIO_IRQ_EDGE_FALL)
+        {
+            const int event = ROTARY_DOWN_EVENT;
+            queue_try_add(&fifo, &event);
+        }
     }
 }
 
-void handle_rot(void)
+void handle_rot()
 {
+    int event = ROTARY_LEFT_EVENT;
     if (gpio_get(ROT_B) == 1)
     {
-        int event = ROTARY_RIGHT_EVENT;
-        queue_try_add(&fifo, &event);
+        event = ROTARY_RIGHT_EVENT;
     }
-    else
-    {
-        int event = ROTARY_LEFT_EVENT;
-        queue_try_add(&fifo, &event);
-    }
+    queue_try_add(&fifo, &event);
 }
 
-void init_gpio(void)
-{
-    gpio_init(ROT_SW);
-    gpio_init(ROT_A);
-    gpio_init(ROT_B);
 
-    gpio_set_dir(ROT_SW, GPIO_IN);
-    gpio_set_dir(ROT_A, GPIO_IN);
-    gpio_set_dir(ROT_B, GPIO_IN);
-
-    gpio_pull_up(ROT_SW);
-}
-
-void set_led_levels(const int *leds, const int level)
+void set_led_levels(const int level)
 {
     for (int i = 0; i < 3; i++)
     {
@@ -113,7 +108,18 @@ void set_led_levels(const int *leds, const int level)
     }
 }
 
-void init_pwm(const int *leds)
+void init_gpio()
+{
+    const int gpios[3] = {ROT_SW, ROT_A, ROT_B};
+    for (int i = 0; i < 3; i++)
+    {
+        gpio_init(gpios[i]);
+        gpio_set_dir(gpios[i], GPIO_IN);
+    }
+    gpio_pull_up(ROT_SW);
+}
+
+void init_pwm()
 {
     for (int i = 0; i < 3; i++)
     {

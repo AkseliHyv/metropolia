@@ -25,13 +25,14 @@ typedef struct
 #define LED_2_GPIO 21
 #define LED_3_GPIO 22
 #define FIFO_LENGTH 32
-#define DEBOUNCE_TIMER 1000000
+#define DEBOUNCE_TIMER 50000
+#define STEP_SIZE 50
 
 void irq(uint gpio, uint32_t event_mask);
-void handle_sw(void);
+void handle_sw(uint32_t mask);
 void handle_rot(void);
-void init_button(int pin, bool button);
 void init_gpio(void);
-void set_led_levels(const int *leds, const int level);
+void init_pwm(void);
+void set_led_levels(int level);
 
 #endif // HEADERS_H_
